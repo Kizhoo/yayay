@@ -1,0 +1,1207 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Serenity Spa & Salon - Kecantikan dan Relaksasi</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #c9a8a9;
+            --secondary: #8b6b61;
+            --accent: #d4b5b0;
+            --light: #f9f5f1;
+            --dark: #5d4037;
+            --text: #333333;
+            --shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.6;
+            color: var(--text);
+            background-color: var(--light);
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Playfair Display', serif;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        section {
+            padding: 80px 0;
+        }
+
+        /* Header & Navigation */
+        header {
+            background-color: rgba(255, 255, 255, 0.95);
+            box-shadow: var(--shadow);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            transition: var(--transition);
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+        }
+
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .logo span {
+            color: var(--secondary);
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+
+        nav ul li {
+            margin-left: 30px;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: var(--text);
+            font-weight: 500;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        nav ul li a:hover {
+            color: var(--primary);
+        }
+
+        nav ul li a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--primary);
+            transition: var(--transition);
+        }
+
+        nav ul li a:hover::after {
+            width: 100%;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: var(--dark);
+            cursor: pointer;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.5)), url('https://images.unsplash.com/photo-1540555700478-4be289fbecef?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80');
+            background-size: cover;
+            background-position: center;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            color: white;
+            text-align: center;
+            margin-top: 70px;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            color: white;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: var(--primary);
+            color: white;
+            padding: 12px 30px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .btn:hover {
+            background-color: var(--secondary);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Section Titles */
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .section-title h2 {
+            font-size: 2.5rem;
+            position: relative;
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+
+        .section-title h2::after {
+            content: '';
+            position: absolute;
+            width: 70px;
+            height: 3px;
+            background-color: var(--primary);
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .section-title p {
+            max-width: 700px;
+            margin: 0 auto;
+            color: #666;
+        }
+
+        /* Services Section */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .service-card {
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .service-img {
+            height: 200px;
+            overflow: hidden;
+        }
+
+        .service-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+
+        .service-card:hover .service-img img {
+            transform: scale(1.05);
+        }
+
+        .service-content {
+            padding: 25px;
+        }
+
+        .service-content h3 {
+            margin-bottom: 10px;
+            font-size: 1.5rem;
+        }
+
+        /* Gallery Section */
+        .gallery-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .gallery-item {
+            border-radius: 10px;
+            overflow: hidden;
+            height: 250px;
+            position: relative;
+            box-shadow: var(--shadow);
+            cursor: pointer;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.1);
+        }
+
+        .gallery-item-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 15px;
+            transform: translateY(100%);
+            transition: var(--transition);
+        }
+
+        .gallery-item:hover .gallery-item-overlay {
+            transform: translateY(0);
+        }
+
+        /* Reviews Section */
+        .reviews-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+
+        .review-card {
+            background-color: white;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        .review-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .review-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .reviewer-info {
+            display: flex;
+            align-items: center;
+        }
+
+        .reviewer-img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin-right: 15px;
+        }
+
+        .reviewer-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .reviewer-name {
+            font-weight: 600;
+        }
+
+        .review-date {
+            color: #888;
+            font-size: 0.9rem;
+        }
+
+        .rating {
+            color: #ffc107;
+            font-size: 1.2rem;
+        }
+
+        .review-text {
+            margin-bottom: 15px;
+        }
+
+        .review-photo {
+            margin-top: 15px;
+            border-radius: 8px;
+            overflow: hidden;
+            height: 150px;
+        }
+
+        .review-photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Review Form */
+        .review-form-container {
+            background-color: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: var(--shadow);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 16px;
+            transition: var(--transition);
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        textarea.form-control {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .star-rating {
+            display: flex;
+            gap: 5px;
+            margin-bottom: 10px;
+        }
+
+        .star-rating i {
+            font-size: 24px;
+            color: #ddd;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .star-rating i.active {
+            color: #ffc107;
+        }
+
+        .photo-upload {
+            border: 2px dashed #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .photo-upload:hover {
+            border-color: var(--primary);
+        }
+
+        /* Booking Modal */
+        .booking-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+        }
+
+        .booking-modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background-color: white;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 500px;
+            padding: 30px;
+            position: relative;
+            transform: translateY(-50px);
+            transition: var(--transition);
+            text-align: center;
+        }
+
+        .booking-modal.active .modal-content {
+            transform: translateY(0);
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #888;
+            transition: var(--transition);
+        }
+
+        .close-modal:hover {
+            color: var(--dark);
+        }
+
+        .modal-links {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 25px;
+        }
+
+        .modal-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 15px;
+            border-radius: 8px;
+            text-decoration: none;
+            color: white;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .modal-link i {
+            font-size: 1.5rem;
+        }
+
+        .modal-link.whatsapp {
+            background-color: #25D366;
+        }
+
+        .modal-link.instagram {
+            background: linear-gradient(45deg, #405DE6, #5851DB, #833AB4, #C13584, #E1306C, #FD1D1D);
+        }
+
+        .modal-link.facebook {
+            background-color: #1877F2;
+        }
+
+        .modal-link.website {
+            background-color: var(--primary);
+        }
+
+        .modal-link:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 60px 0 20px;
+        }
+
+        .footer-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-col h3 {
+            color: white;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .footer-col h3::after {
+            content: '';
+            position: absolute;
+            width: 50px;
+            height: 2px;
+            background-color: var(--primary);
+            bottom: -8px;
+            left: 0;
+        }
+
+        .footer-col p {
+            margin-bottom: 15px;
+            opacity: 0.8;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .social-links a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            color: white;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .social-links a:hover {
+            background-color: var(--primary);
+            transform: translateY(-3px);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: var(--transition);
+        }
+
+        .fade-in.appear {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 992px) {
+            .hero h1 {
+                font-size: 2.8rem;
+            }
+            
+            .section-title h2 {
+                font-size: 2.2rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            nav {
+                position: fixed;
+                top: 70px;
+                left: 0;
+                width: 100%;
+                background-color: white;
+                box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+                padding: 20px;
+                transform: translateY(-100%);
+                opacity: 0;
+                visibility: hidden;
+                transition: var(--transition);
+            }
+
+            nav.active {
+                transform: translateY(0);
+                opacity: 1;
+                visibility: visible;
+            }
+
+            nav ul {
+                flex-direction: column;
+            }
+
+            nav ul li {
+                margin: 0 0 15px 0;
+            }
+
+            .hero h1 {
+                font-size: 2.3rem;
+            }
+            
+            .hero p {
+                font-size: 1rem;
+            }
+            
+            section {
+                padding: 60px 0;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .section-title h2 {
+                font-size: 1.8rem;
+            }
+            
+            .modal-content {
+                padding: 20px;
+            }
+            
+            .modal-link {
+                padding: 12px;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container header-container">
+            <a href="#" class="logo">Serenity<span>Spa</span></a>
+            <button class="mobile-menu-btn">
+                <i class="fas fa-bars"></i>
+            </button>
+            <nav>
+                <ul>
+                    <li><a href="#home">Beranda</a></li>
+                    <li><a href="#services">Layanan</a></li>
+                    <li><a href="#gallery">Galeri</a></li>
+                    <li><a href="#reviews">Ulasan</a></li>
+                    <li><a href="#booking" class="btn booking-btn">Booking Online</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="container hero-content">
+            <h1>Pengalaman Relaksasi & Kecantikan Terbaik</h1>
+            <p>Serenity Spa & Salon menawarkan perawatan lengkap untuk tubuh dan pikiran Anda. Dari pijat relaksasi, perawatan wajah, hingga gaya rambut terbaru, kami hadir untuk membuat Anda merasa lebih baik.</p>
+            <a href="#booking" class="btn">Booking Sekarang</a>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services">
+        <div class="container">
+            <div class="section-title">
+                <h2>Layanan Kami</h2>
+                <p>Kami menawarkan berbagai layanan kecantikan dan relaksasi yang dipersonalisasi untuk kebutuhan Anda</p>
+            </div>
+            <div class="services-grid">
+                <div class="service-card fade-in">
+                    <div class="service-img">
+                        <img src="https://images.unsplash.com/photo-1560066984-138dadb4c035?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1074&q=80" alt="Pijat Relaksasi">
+                    </div>
+                    <div class="service-content">
+                        <h3>Pijat Relaksasi</h3>
+                        <p>Pijat dengan minyak aromaterapi untuk melepas ketegangan otot dan menenangkan pikiran.</p>
+                    </div>
+                </div>
+                <div class="service-card fade-in">
+                    <div class="service-img">
+                        <img src="https://images.unsplash.com/photo-1596703923338-48f1c07e4f2e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1070&q=80" alt="Facial Treatment">
+                    </div>
+                    <div class="service-content">
+                        <h3>Perawatan Wajah</h3>
+                        <p>Perawatan wajah lengkap dengan produk premium untuk kulit yang sehat dan bercahaya.</p>
+                    </div>
+                </div>
+                <div class="service-card fade-in">
+                    <div class="service-img">
+                        <img src="https://images.unsplash.com/photo-1560066984-138dadb4c035?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1074&q=80" alt="Hair Styling">
+                    </div>
+                    <div class="service-content">
+                        <h3>Gaya Rambut</h3>
+                        <p>Potong, cat, dan styling rambut oleh penata rambut profesional sesuai tren terbaru.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section id="gallery" style="background-color: #f5f0eb;">
+        <div class="container">
+            <div class="section-title">
+                <h2>Galeri Lokasi Kami</h2>
+                <p>Lihat suasana dan fasilitas Serenity Spa & Salon yang nyaman dan mewah</p>
+            </div>
+            <div class="gallery-container">
+                <div class="gallery-item fade-in">
+                    <img src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" alt="Interior Salon">
+                    <div class="gallery-item-overlay">
+                        <p>Ruang Tunggu yang Nyaman</p>
+                    </div>
+                </div>
+                <div class="gallery-item fade-in">
+                    <img src="https://images.unsplash.com/photo-1596703923338-48f1c07e4f2e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1070&q=80" alt="Treatment Room">
+                    <div class="gallery-item-overlay">
+                        <p>Ruang Perawatan Eksklusif</p>
+                    </div>
+                </div>
+                <div class="gallery-item fade-in">
+                    <img src="https://images.unsplash.com/photo-1634942537034-2531766767d1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1228&q=80" alt="Spa Facilities">
+                    <div class="gallery-item-overlay">
+                        <p>Fasilitas Spa Lengkap</p>
+                    </div>
+                </div>
+                <div class="gallery-item fade-in">
+                    <img src="https://images.unsplash.com/photo-1560448204-603b3fc33ddc?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" alt="Salon Area">
+                    <div class="gallery-item-overlay">
+                        <p>Area Salon yang Modern</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Reviews Section -->
+    <section id="reviews">
+        <div class="container">
+            <div class="section-title">
+                <h2>Ulasan Pelanggan</h2>
+                <p>Apa kata pelanggan tentang pengalaman mereka di Serenity Spa & Salon</p>
+            </div>
+            <div class="reviews-container" id="reviews-container">
+                <!-- Reviews will be loaded here dynamically -->
+            </div>
+            
+            <!-- Review Form -->
+            <div class="review-form-container fade-in">
+                <h3 style="text-align: center; margin-bottom: 25px;">Bagikan Pengalaman Anda</h3>
+                <form id="review-form">
+                    <div class="form-group">
+                        <label for="reviewer-name">Nama Anda</label>
+                        <input type="text" id="reviewer-name" class="form-control" placeholder="Masukkan nama Anda" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Rating</label>
+                        <div class="star-rating">
+                            <i class="fas fa-star" data-rating="1"></i>
+                            <i class="fas fa-star" data-rating="2"></i>
+                            <i class="fas fa-star" data-rating="3"></i>
+                            <i class="fas fa-star" data-rating="4"></i>
+                            <i class="fas fa-star" data-rating="5"></i>
+                        </div>
+                        <input type="hidden" id="rating-value" value="5">
+                    </div>
+                    <div class="form-group">
+                        <label for="review-text">Ulasan Anda</label>
+                        <textarea id="review-text" class="form-control" placeholder="Bagikan pengalaman Anda di Serenity Spa & Salon" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Unggah Foto (Opsional)</label>
+                        <div class="photo-upload" id="photo-upload">
+                            <i class="fas fa-cloud-upload-alt" style="font-size: 2rem; color: var(--primary); margin-bottom: 10px;"></i>
+                            <p>Klik untuk mengunggah foto lokasi atau hasil perawatan</p>
+                            <input type="file" id="photo-input" accept="image/*" style="display: none;">
+                        </div>
+                        <div id="photo-preview" style="margin-top: 15px;"></div>
+                    </div>
+                    <button type="submit" class="btn" style="width: 100%;">Kirim Ulasan</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Booking Modal -->
+    <div class="booking-modal" id="booking-modal">
+        <div class="modal-content">
+            <button class="close-modal" id="close-modal">&times;</button>
+            <h2>Booking Online</h2>
+            <p>Pilih salah satu metode di bawah untuk melakukan pemesanan:</p>
+            <div class="modal-links">
+                <a href="https://wa.me/6281234567890?text=Halo%20Serenity%20Spa%2C%20saya%20ingin%20booking%20layanan" class="modal-link whatsapp" target="_blank">
+                    <i class="fab fa-whatsapp"></i> WhatsApp Booking
+                </a>
+                <a href="https://www.instagram.com/serenityspa" class="modal-link instagram" target="_blank">
+                    <i class="fab fa-instagram"></i> Instagram DM
+                </a>
+                <a href="https://www.facebook.com/serenityspa" class="modal-link facebook" target="_blank">
+                    <i class="fab fa-facebook"></i> Facebook Message
+                </a>
+                <a href="tel:+628123456789" class="modal-link website">
+                    <i class="fas fa-phone"></i> Telepon Langsung
+                </a>
+            </div>
+            <p style="margin-top: 20px; font-size: 0.9rem; color: #666;">Jam operasional: 09:00 - 21:00 setiap hari</p>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-container">
+                <div class="footer-col">
+                    <h3>Serenity Spa</h3>
+                    <p>Menawarkan pengalaman relaksasi dan kecantikan terbaik dengan layanan profesional dan fasilitas premium.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h3>Kontak Kami</h3>
+                    <p><i class="fas fa-map-marker-alt"></i> Jl. Kemang Raya No. 12, Jakarta Selatan</p>
+                    <p><i class="fas fa-phone"></i> (021) 1234-5678</p>
+                    <p><i class="fas fa-envelope"></i> info@serenityspa.com</p>
+                    <p><i class="fas fa-clock"></i> Buka setiap hari 09:00 - 21:00</p>
+                </div>
+                <div class="footer-col">
+                    <h3>Link Cepat</h3>
+                    <p><a href="#home" style="color: white; text-decoration: none;">Beranda</a></p>
+                    <p><a href="#services" style="color: white; text-decoration: none;">Layanan</a></p>
+                    <p><a href="#gallery" style="color: white; text-decoration: none;">Galeri</a></p>
+                    <p><a href="#reviews" style="color: white; text-decoration: none;">Ulasan</a></p>
+                    <p><a href="#booking" style="color: white; text-decoration: none;" class="booking-btn-footer">Booking Online</a></p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2023 Serenity Spa & Salon. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Sample reviews data
+        const sampleReviews = [
+            {
+                id: 1,
+                name: "Rina Wijaya",
+                date: "15 Agustus 2023",
+                rating: 5,
+                text: "Pengalaman terbaik! Pijat relaksasinya benar-benar melepas penat. Terapisnya sangat profesional dan lingkungannya nyaman. Pasti akan kembali lagi!",
+                photo: "https://images.unsplash.com/photo-1596703923338-48f1c07e4f2e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1070&q=80"
+            },
+            {
+                id: 2,
+                name: "Dewi Sari",
+                date: "10 Agustus 2023",
+                rating: 4,
+                text: "Fasilitasnya lengkap dan bersih. Stafnya ramah-ramah. Perawatan wajahnya membuat kulit saya terasa lebih halus dan segar. Harga cukup worth it untuk kualitas yang diberikan.",
+                photo: "https://images.unsplash.com/photo-1560448204-603b3fc33ddc?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80"
+            },
+            {
+                id: 3,
+                name: "Budi Santoso",
+                date: "5 Agustus 2023",
+                rating: 5,
+                text: "Pertama kali mencoba spa dan hasilnya beyond expectation. Suasana tenang, aroma terapi menenangkan, dan pelayanan excellent. Sangat direkomendasikan!",
+                photo: "https://images.unsplash.com/photo-1634942537034-2531766767d1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1228&q=80"
+            }
+        ];
+
+        // DOM Elements
+        const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+        const nav = document.querySelector('nav');
+        const bookingBtns = document.querySelectorAll('.booking-btn, .booking-btn-footer');
+        const bookingModal = document.getElementById('booking-modal');
+        const closeModalBtn = document.getElementById('close-modal');
+        const reviewsContainer = document.getElementById('reviews-container');
+        const reviewForm = document.getElementById('review-form');
+        const starRating = document.querySelectorAll('.star-rating i');
+        const ratingValue = document.getElementById('rating-value');
+        const photoUpload = document.getElementById('photo-upload');
+        const photoInput = document.getElementById('photo-input');
+        const photoPreview = document.getElementById('photo-preview');
+
+        // Mobile Menu Toggle
+        mobileMenuBtn.addEventListener('click', () => {
+            nav.classList.toggle('active');
+            mobileMenuBtn.innerHTML = nav.classList.contains('active') 
+                ? '<i class="fas fa-times"></i>' 
+                : '<i class="fas fa-bars"></i>';
+        });
+
+        // Close mobile menu when clicking on a link
+        document.querySelectorAll('nav a').forEach(link => {
+            link.addEventListener('click', () => {
+                nav.classList.remove('active');
+                mobileMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
+            });
+        });
+
+        // Booking Modal
+        bookingBtns.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                bookingModal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            });
+        });
+
+        // Close Modal
+        closeModalBtn.addEventListener('click', () => {
+            bookingModal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        });
+
+        // Close modal when clicking outside
+        bookingModal.addEventListener('click', (e) => {
+            if (e.target === bookingModal) {
+                bookingModal.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            }
+        });
+
+        // Star Rating
+        starRating.forEach(star => {
+            star.addEventListener('click', () => {
+                const rating = star.getAttribute('data-rating');
+                ratingValue.value = rating;
+                
+                starRating.forEach(s => {
+                    if (s.getAttribute('data-rating') <= rating) {
+                        s.classList.add('active');
+                    } else {
+                        s.classList.remove('active');
+                    }
+                });
+            });
+        });
+
+        // Photo Upload
+        photoUpload.addEventListener('click', () => {
+            photoInput.click();
+        });
+
+        photoInput.addEventListener('change', function() {
+            const file = this.files[0];
+            if (file) {
+                const reader = new FileReader();
+                
+                reader.addEventListener('load', function() {
+                    photoPreview.innerHTML = `
+                        <div style="display: flex; align-items: center; background-color: #f9f9f9; padding: 10px; border-radius: 8px;">
+                            <img src="${reader.result}" alt="Preview" style="width: 80px; height: 80px; object-fit: cover; border-radius: 5px; margin-right: 15px;">
+                            <div>
+                                <p style="font-weight: 500; margin-bottom: 5px;">${file.name}</p>
+                                <p style="font-size: 0.9rem; color: #666;">${(file.size / 1024).toFixed(2)} KB</p>
+                            </div>
+                            <button type="button" id="remove-photo" style="margin-left: auto; background: none; border: none; color: #ff6b6b; cursor: pointer;">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    `;
+                    
+                    // Add event listener to remove button
+                    document.getElementById('remove-photo').addEventListener('click', function() {
+                        photoPreview.innerHTML = '';
+                        photoInput.value = '';
+                    });
+                });
+                
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Load Sample Reviews
+        function loadReviews() {
+            reviewsContainer.innerHTML = '';
+            
+            sampleReviews.forEach(review => {
+                const reviewCard = document.createElement('div');
+                reviewCard.className = 'review-card fade-in';
+                
+                let stars = '';
+                for (let i = 1; i <= 5; i++) {
+                    stars += i <= review.rating 
+                        ? '<i class="fas fa-star"></i>' 
+                        : '<i class="far fa-star"></i>';
+                }
+                
+                reviewCard.innerHTML = `
+                    <div class="review-header">
+                        <div class="reviewer-info">
+                            <div class="reviewer-img">
+                                <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(review.name)}&background=${encodeURIComponent('c9a8a9')}&color=fff" alt="${review.name}">
+                            </div>
+                            <div>
+                                <div class="reviewer-name">${review.name}</div>
+                                <div class="review-date">${review.date}</div>
+                            </div>
+                        </div>
+                        <div class="rating">
+                            ${stars}
+                        </div>
+                    </div>
+                    <div class="review-text">
+                        <p>${review.text}</p>
+                    </div>
+                    <div class="review-photo">
+                        <img src="${review.photo}" alt="Review Photo">
+                    </div>
+                `;
+                
+                reviewsContainer.appendChild(reviewCard);
+            });
+            
+            // Initialize fade-in animations
+            initFadeIn();
+        }
+
+        // Submit Review Form
+        reviewForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('reviewer-name').value;
+            const rating = parseInt(ratingValue.value);
+            const text = document.getElementById('review-text').value;
+            const date = new Date().toLocaleDateString('id-ID', { 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric' 
+            });
+            
+            // Create new review object
+            const newReview = {
+                id: sampleReviews.length + 1,
+                name: name,
+                date: date,
+                rating: rating,
+                text: text,
+                photo: photoInput.files.length > 0 
+                    ? URL.createObjectURL(photoInput.files[0]) 
+                    : "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80"
+            };
+            
+            // Add to beginning of sampleReviews
+            sampleReviews.unshift(newReview);
+            
+            // Reload reviews
+            loadReviews();
+            
+            // Reset form
+            reviewForm.reset();
+            photoPreview.innerHTML = '';
+            photoInput.value = '';
+            
+            // Reset stars to default
+            starRating.forEach(star => {
+                star.classList.remove('active');
+            });
+            starRating[4].classList.add('active');
+            ratingValue.value = 5;
+            
+            // Show success message
+            alert('Terima kasih! Ulasan Anda telah berhasil dikirim.');
+        });
+
+        // Fade-in animation on scroll
+        function initFadeIn() {
+            const fadeElements = document.querySelectorAll('.fade-in');
+            
+            const fadeInOnScroll = () => {
+                fadeElements.forEach(element => {
+                    const elementTop = element.getBoundingClientRect().top;
+                    const elementVisible = 150;
+                    
+                    if (elementTop < window.innerHeight - elementVisible) {
+                        element.classList.add('appear');
+                    }
+                });
+            };
+            
+            // Initial check
+            fadeInOnScroll();
+            
+            // Check on scroll
+            window.addEventListener('scroll', fadeInOnScroll);
+        }
+
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            loadReviews();
+            
+            // Set current year in footer
+            document.querySelector('.footer-bottom p').innerHTML = `&copy; ${new Date().getFullYear()} Serenity Spa & Salon. All rights reserved.`;
+            
+            // Header scroll effect
+            window.addEventListener('scroll', function() {
+                const header = document.querySelector('header');
+                if (window.scrollY > 50) {
+                    header.style.backgroundColor = 'rgba(255, 255, 255, 0.98)';
+                    header.style.boxShadow = '0 5px 20px rgba(0, 0, 0, 0.1)';
+                } else {
+                    header.style.backgroundColor = 'rgba(255, 255, 255, 0.95)';
+                    header.style.boxShadow = '0 5px 15px rgba(0, 0, 0, 0.1)';
+                }
+            });
+        });
+
+        // Instructions for Netlify deployment
+        console.log("Untuk deploy ke Netlify:");
+        console.log("1. Buat akun di Netlify.com");
+        console.log("2. Pilih 'New site from Git'");
+        console.log("3. Pilih repository yang berisi file ini");
+        console.log("4. Netlify akan otomatis mendeteksi dan deploy website Anda");
+        console.log("5. Setelah deploy, Anda bisa mengakses website dengan URL yang diberikan Netlify");
+        console.log("6. Untuk custom domain, masuk ke 'Domain settings' di dashboard Netlify");
+    </script>
+</body>
+  </html>
