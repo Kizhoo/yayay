@@ -5,10 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Serenity Spa & Salon - Kecantikan dan Relaksasi</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     <style>
         :root {
             --primary: #c9a8a9;
@@ -17,8 +18,12 @@
             --light: #f9f5f1;
             --dark: #5d4037;
             --text: #333333;
-            --shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            --transition: all 0.3s ease;
+            --success: #4CAF50;
+            --warning: #ff9800;
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            --shadow-hover: 0 20px 40px rgba(0, 0, 0, 0.12);
+            --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            --gradient: linear-gradient(135deg, #c9a8a9 0%, #d4b5b0 100%);
         }
 
         * {
@@ -53,18 +58,19 @@
         }
 
         section {
-            padding: 80px 0;
+            padding: 100px 0;
         }
 
         /* Header & Navigation */
         header {
-            background-color: rgba(255, 255, 255, 0.95);
+            background-color: rgba(255, 255, 255, 0.98);
             box-shadow: var(--shadow);
             position: fixed;
             width: 100%;
             top: 0;
             z-index: 1000;
             transition: var(--transition);
+            backdrop-filter: blur(10px);
         }
 
         .header-container {
@@ -76,14 +82,22 @@
 
         .logo {
             font-family: 'Playfair Display', serif;
-            font-size: 28px;
+            font-size: 32px;
             font-weight: 700;
             color: var(--primary);
             text-decoration: none;
+            display: flex;
+            align-items: center;
         }
 
         .logo span {
             color: var(--secondary);
+            margin-left: 5px;
+        }
+
+        .logo-icon {
+            font-size: 28px;
+            margin-right: 10px;
         }
 
         nav ul {
@@ -92,7 +106,7 @@
         }
 
         nav ul li {
-            margin-left: 30px;
+            margin-left: 35px;
         }
 
         nav ul li a {
@@ -101,6 +115,7 @@
             font-weight: 500;
             transition: var(--transition);
             position: relative;
+            padding: 5px 0;
         }
 
         nav ul li a:hover {
@@ -110,11 +125,11 @@
         nav ul li a::after {
             content: '';
             position: absolute;
-            bottom: -5px;
+            bottom: 0;
             left: 0;
             width: 0;
             height: 2px;
-            background-color: var(--primary);
+            background: var(--gradient);
             transition: var(--transition);
         }
 
@@ -129,111 +144,167 @@
             font-size: 24px;
             color: var(--dark);
             cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .mobile-menu-btn:hover {
+            color: var(--primary);
         }
 
         /* Hero Section */
         .hero {
-            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.5)), url('https://images.unsplash.com/photo-1540555700478-4be289fbecef?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80');
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.5)), url('https://images.unsplash.com/photo-1540555700478-4be289fbecef?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80');
             background-size: cover;
             background-position: center;
-            height: 100vh;
+            background-attachment: fixed;
+            min-height: 100vh;
             display: flex;
             align-items: center;
             color: white;
             text-align: center;
-            margin-top: 70px;
+            margin-top: 80px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.4) 100%);
         }
 
         .hero-content {
-            max-width: 800px;
+            max-width: 900px;
             margin: 0 auto;
-            animation: fadeInUp 1s ease-out;
+            position: relative;
+            z-index: 1;
+            animation: fadeInUp 1.2s ease-out;
         }
 
         .hero h1 {
-            font-size: 3.5rem;
-            margin-bottom: 20px;
+            font-size: 4rem;
+            margin-bottom: 25px;
             color: white;
+            text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
+            line-height: 1.2;
         }
 
         .hero p {
-            font-size: 1.2rem;
-            margin-bottom: 30px;
+            font-size: 1.3rem;
+            margin-bottom: 40px;
             opacity: 0.9;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
         }
 
         .btn {
-            display: inline-block;
-            background-color: var(--primary);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--gradient);
             color: white;
-            padding: 12px 30px;
-            border-radius: 30px;
+            padding: 16px 40px;
+            border-radius: 50px;
             text-decoration: none;
             font-weight: 600;
             transition: var(--transition);
             border: none;
             cursor: pointer;
-            font-size: 16px;
+            font-size: 18px;
+            box-shadow: 0 10px 20px rgba(201, 168, 169, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: 0.5s;
+        }
+
+        .btn:hover::after {
+            left: 100%;
         }
 
         .btn:hover {
-            background-color: var(--secondary);
-            transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(201, 168, 169, 0.4);
+        }
+
+        .btn i {
+            margin-left: 10px;
+            transition: var(--transition);
+        }
+
+        .btn:hover i {
+            transform: translateX(5px);
         }
 
         /* Section Titles */
         .section-title {
             text-align: center;
-            margin-bottom: 50px;
+            margin-bottom: 70px;
         }
 
         .section-title h2 {
-            font-size: 2.5rem;
+            font-size: 3rem;
             position: relative;
             display: inline-block;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
         }
 
         .section-title h2::after {
             content: '';
             position: absolute;
-            width: 70px;
-            height: 3px;
-            background-color: var(--primary);
-            bottom: -10px;
+            width: 100px;
+            height: 4px;
+            background: var(--gradient);
+            bottom: -15px;
             left: 50%;
             transform: translateX(-50%);
+            border-radius: 2px;
         }
 
         .section-title p {
             max-width: 700px;
-            margin: 0 auto;
+            margin: 25px auto 0;
             color: #666;
+            font-size: 1.1rem;
         }
 
         /* Services Section */
         .services-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 40px;
         }
 
         .service-card {
             background-color: white;
-            border-radius: 10px;
+            border-radius: 20px;
             overflow: hidden;
             box-shadow: var(--shadow);
             transition: var(--transition);
+            position: relative;
         }
 
         .service-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+            transform: translateY(-15px);
+            box-shadow: var(--shadow-hover);
         }
 
         .service-img {
-            height: 200px;
+            height: 250px;
             overflow: hidden;
         }
 
@@ -245,29 +316,54 @@
         }
 
         .service-card:hover .service-img img {
-            transform: scale(1.05);
+            transform: scale(1.1);
         }
 
         .service-content {
-            padding: 25px;
+            padding: 30px;
         }
 
         .service-content h3 {
-            margin-bottom: 10px;
-            font-size: 1.5rem;
+            margin-bottom: 15px;
+            font-size: 1.6rem;
+        }
+
+        .service-content p {
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .service-icon {
+            position: absolute;
+            top: -25px;
+            right: 25px;
+            width: 60px;
+            height: 60px;
+            background: var(--gradient);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            box-shadow: 0 10px 20px rgba(201, 168, 169, 0.3);
         }
 
         /* Gallery Section */
+        .gallery-section {
+            background-color: #f5f0eb;
+        }
+
         .gallery-container {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
         }
 
         .gallery-item {
-            border-radius: 10px;
+            border-radius: 15px;
             overflow: hidden;
-            height: 250px;
+            height: 300px;
             position: relative;
             box-shadow: var(--shadow);
             cursor: pointer;
@@ -281,50 +377,133 @@
         }
 
         .gallery-item:hover img {
-            transform: scale(1.1);
+            transform: scale(1.15);
         }
 
         .gallery-item-overlay {
             position: absolute;
-            bottom: 0;
+            top: 0;
             left: 0;
             right: 0;
-            background: rgba(0, 0, 0, 0.7);
+            bottom: 0;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
             color: white;
-            padding: 15px;
-            transform: translateY(100%);
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            opacity: 0;
             transition: var(--transition);
         }
 
         .gallery-item:hover .gallery-item-overlay {
+            opacity: 1;
+        }
+
+        .gallery-item-overlay h3 {
+            color: white;
+            margin-bottom: 10px;
+            transform: translateY(20px);
+            transition: var(--transition);
+            transition-delay: 0.1s;
+        }
+
+        .gallery-item:hover .gallery-item-overlay h3 {
+            transform: translateY(0);
+        }
+
+        .gallery-item-overlay p {
+            opacity: 0.9;
+            transform: translateY(20px);
+            transition: var(--transition);
+            transition-delay: 0.2s;
+        }
+
+        .gallery-item:hover .gallery-item-overlay p {
             transform: translateY(0);
         }
 
         /* Reviews Section */
+        .reviews-section {
+            position: relative;
+        }
+
+        .reviews-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .rating-filter {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .rating-filter-btn {
+            padding: 10px 20px;
+            background: white;
+            border: 2px solid #eee;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .rating-filter-btn:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .rating-filter-btn.active {
+            background: var(--gradient);
+            color: white;
+            border-color: transparent;
+        }
+
         .reviews-container {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
             gap: 30px;
             margin-bottom: 50px;
         }
 
         .review-card {
             background-color: white;
-            border-radius: 10px;
-            padding: 25px;
+            border-radius: 20px;
+            padding: 30px;
             box-shadow: var(--shadow);
             transition: var(--transition);
+            position: relative;
+            overflow: hidden;
         }
 
         .review-card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .review-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: var(--gradient);
         }
 
         .review-header {
             display: flex;
             justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
+            align-items: flex-start;
+            margin-bottom: 20px;
         }
 
         .reviewer-info {
@@ -333,11 +512,13 @@
         }
 
         .reviewer-img {
-            width: 50px;
-            height: 50px;
+            width: 60px;
+            height: 60px;
             border-radius: 50%;
             overflow: hidden;
             margin-right: 15px;
+            border: 3px solid var(--light);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         }
 
         .reviewer-img img {
@@ -346,8 +527,9 @@
             object-fit: cover;
         }
 
-        .reviewer-name {
-            font-weight: 600;
+        .reviewer-details h4 {
+            margin-bottom: 5px;
+            font-size: 1.2rem;
         }
 
         .review-date {
@@ -357,94 +539,216 @@
 
         .rating {
             color: #ffc107;
-            font-size: 1.2rem;
+            font-size: 1.3rem;
+            display: flex;
+            gap: 3px;
         }
 
         .review-text {
-            margin-bottom: 15px;
+            margin-bottom: 20px;
+            font-size: 1.05rem;
+            line-height: 1.7;
         }
 
         .review-photo {
-            margin-top: 15px;
-            border-radius: 8px;
+            margin-top: 20px;
+            border-radius: 15px;
             overflow: hidden;
-            height: 150px;
+            height: 200px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
         }
 
         .review-photo img {
             width: 100%;
             height: 100%;
             object-fit: cover;
+            transition: var(--transition);
+        }
+
+        .review-photo:hover img {
+            transform: scale(1.05);
         }
 
         /* Review Form */
         .review-form-container {
             background-color: white;
-            border-radius: 10px;
-            padding: 30px;
+            border-radius: 25px;
+            padding: 40px;
             box-shadow: var(--shadow);
-            max-width: 800px;
+            max-width: 900px;
             margin: 0 auto;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .review-form-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 8px;
+            background: var(--gradient);
+        }
+
+        .review-form-title {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2rem;
         }
 
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 25px;
         }
 
         .form-group label {
             display: block;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
             font-weight: 500;
+            font-size: 1.1rem;
         }
 
         .form-control {
             width: 100%;
-            padding: 12px 15px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
+            padding: 16px 20px;
+            border: 2px solid #eee;
+            border-radius: 12px;
             font-family: 'Poppins', sans-serif;
             font-size: 16px;
             transition: var(--transition);
+            background-color: #f9f9f9;
         }
 
         .form-control:focus {
             outline: none;
             border-color: var(--primary);
+            background-color: white;
+            box-shadow: 0 0 0 3px rgba(201, 168, 169, 0.2);
         }
 
         textarea.form-control {
-            min-height: 120px;
+            min-height: 150px;
             resize: vertical;
         }
 
         .star-rating {
             display: flex;
-            gap: 5px;
-            margin-bottom: 10px;
+            gap: 10px;
+            margin-bottom: 15px;
+            flex-direction: row-reverse;
+            justify-content: flex-end;
         }
 
         .star-rating i {
-            font-size: 24px;
+            font-size: 32px;
             color: #ddd;
             cursor: pointer;
             transition: var(--transition);
         }
 
+        .star-rating i:hover,
+        .star-rating i:hover ~ i,
         .star-rating i.active {
             color: #ffc107;
         }
 
-        .photo-upload {
-            border: 2px dashed #ddd;
-            border-radius: 8px;
-            padding: 20px;
+        .photo-upload-container {
+            border: 3px dashed #ddd;
+            border-radius: 15px;
+            padding: 30px;
             text-align: center;
             cursor: pointer;
             transition: var(--transition);
+            background-color: #f9f9f9;
         }
 
-        .photo-upload:hover {
+        .photo-upload-container:hover {
             border-color: var(--primary);
+            background-color: rgba(201, 168, 169, 0.05);
+        }
+
+        .photo-upload-icon {
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+
+        .photo-upload-container p {
+            margin-bottom: 10px;
+            font-weight: 500;
+        }
+
+        .photo-upload-container small {
+            color: #888;
+        }
+
+        #photo-input {
+            display: none;
+        }
+
+        #photo-preview {
+            margin-top: 20px;
+        }
+
+        .photo-preview-item {
+            display: flex;
+            align-items: center;
+            background-color: #f9f9f9;
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 10px;
+        }
+
+        .photo-preview-item img {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-right: 15px;
+        }
+
+        .remove-photo {
+            margin-left: auto;
+            background: none;
+            border: none;
+            color: #ff6b6b;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: var(--transition);
+        }
+
+        .remove-photo:hover {
+            color: #ff0000;
+        }
+
+        .submit-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            padding: 18px;
+            font-size: 1.1rem;
+        }
+
+        .submit-btn i {
+            transition: var(--transition);
+        }
+
+        .submit-btn:hover i {
+            transform: rotate(360deg);
+        }
+
+        /* Loading Spinner */
+        .spinner {
+            display: none;
+            width: 40px;
+            height: 40px;
+            margin: 0 auto;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
         }
 
         /* Booking Modal */
@@ -454,7 +758,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.8);
+            background-color: rgba(0, 0, 0, 0.85);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -462,6 +766,7 @@
             opacity: 0;
             visibility: hidden;
             transition: var(--transition);
+            backdrop-filter: blur(10px);
         }
 
         .booking-modal.active {
@@ -471,146 +776,229 @@
 
         .modal-content {
             background-color: white;
-            border-radius: 15px;
+            border-radius: 25px;
             width: 90%;
-            max-width: 500px;
-            padding: 30px;
+            max-width: 600px;
+            padding: 40px;
             position: relative;
-            transform: translateY(-50px);
+            transform: translateY(-50px) scale(0.9);
             transition: var(--transition);
             text-align: center;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
         }
 
         .booking-modal.active .modal-content {
-            transform: translateY(0);
+            transform: translateY(0) scale(1);
         }
 
         .close-modal {
             position: absolute;
-            top: 15px;
-            right: 15px;
+            top: 20px;
+            right: 20px;
             background: none;
             border: none;
-            font-size: 24px;
+            font-size: 28px;
             cursor: pointer;
             color: #888;
             transition: var(--transition);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .close-modal:hover {
             color: var(--dark);
+            background-color: #f5f5f5;
+        }
+
+        .modal-title {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .modal-subtitle {
+            color: #666;
+            margin-bottom: 40px;
+            font-size: 1.1rem;
         }
 
         .modal-links {
             display: flex;
             flex-direction: column;
-            gap: 15px;
-            margin-top: 25px;
+            gap: 20px;
+            margin-top: 30px;
         }
 
         .modal-link {
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
-            padding: 15px;
-            border-radius: 8px;
+            gap: 15px;
+            padding: 20px;
+            border-radius: 15px;
             text-decoration: none;
             color: white;
             font-weight: 600;
             transition: var(--transition);
+            font-size: 1.1rem;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
         }
 
         .modal-link i {
-            font-size: 1.5rem;
+            font-size: 1.8rem;
         }
 
         .modal-link.whatsapp {
-            background-color: #25D366;
+            background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
         }
 
         .modal-link.instagram {
             background: linear-gradient(45deg, #405DE6, #5851DB, #833AB4, #C13584, #E1306C, #FD1D1D);
         }
 
-        .modal-link.facebook {
-            background-color: #1877F2;
-        }
-
-        .modal-link.website {
-            background-color: var(--primary);
+        .modal-link.tiktok {
+            background: linear-gradient(135deg, #000000 0%, #25F4EE 50%, #FE2C55 100%);
         }
 
         .modal-link:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .modal-link:hover i {
+            transform: scale(1.2);
         }
 
         /* Footer */
         footer {
             background-color: var(--dark);
             color: white;
-            padding: 60px 0 20px;
+            padding: 80px 0 30px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: var(--gradient);
         }
 
         .footer-container {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 40px;
-            margin-bottom: 40px;
+            gap: 50px;
+            margin-bottom: 50px;
         }
 
         .footer-col h3 {
             color: white;
-            font-size: 1.5rem;
-            margin-bottom: 20px;
+            font-size: 1.8rem;
+            margin-bottom: 25px;
             position: relative;
+            display: inline-block;
         }
 
         .footer-col h3::after {
             content: '';
             position: absolute;
             width: 50px;
-            height: 2px;
-            background-color: var(--primary);
-            bottom: -8px;
+            height: 3px;
+            background: var(--gradient);
+            bottom: -10px;
             left: 0;
         }
 
         .footer-col p {
-            margin-bottom: 15px;
+            margin-bottom: 20px;
             opacity: 0.8;
+            line-height: 1.8;
+        }
+
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+        }
+
+        .contact-item i {
+            color: var(--primary);
+            font-size: 1.2rem;
+            margin-top: 3px;
         }
 
         .social-links {
             display: flex;
             gap: 15px;
-            margin-top: 20px;
+            margin-top: 25px;
         }
 
         .social-links a {
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            width: 40px;
-            height: 40px;
+            width: 50px;
+            height: 50px;
             background-color: rgba(255, 255, 255, 0.1);
             border-radius: 50%;
             color: white;
             text-decoration: none;
+            font-size: 1.3rem;
             transition: var(--transition);
         }
 
         .social-links a:hover {
-            background-color: var(--primary);
-            transform: translateY(-3px);
+            background: var(--gradient);
+            transform: translateY(-5px);
+        }
+
+        .footer-links {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .footer-links a {
+            color: white;
+            text-decoration: none;
+            opacity: 0.8;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .footer-links a:hover {
+            opacity: 1;
+            color: var(--primary);
+            transform: translateX(5px);
+        }
+
+        .footer-links a i {
+            font-size: 0.9rem;
         }
 
         .footer-bottom {
             text-align: center;
-            padding-top: 20px;
+            padding-top: 30px;
             border-top: 1px solid rgba(255, 255, 255, 0.1);
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             opacity: 0.7;
         }
 
@@ -618,12 +1006,31 @@
         @keyframes fadeInUp {
             from {
                 opacity: 0;
-                transform: translateY(30px);
+                transform: translateY(50px);
             }
             to {
                 opacity: 1;
                 transform: translateY(0);
             }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
         }
 
         .fade-in {
@@ -637,14 +1044,91 @@
             transform: translateY(0);
         }
 
+        .float-animation {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        /* Notification */
+        .notification {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            padding: 20px 25px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: var(--shadow-hover);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            z-index: 10000;
+            transform: translateX(150%);
+            transition: var(--transition);
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        .notification-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+        }
+
+        .notification.success .notification-icon {
+            background-color: var(--success);
+        }
+
+        .notification.error .notification-icon {
+            background-color: #f44336;
+        }
+
+        .notification-content h4 {
+            margin-bottom: 5px;
+            font-size: 1.1rem;
+        }
+
+        .notification-content p {
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .close-notification {
+            background: none;
+            border: none;
+            color: #888;
+            cursor: pointer;
+            font-size: 1.2rem;
+            margin-left: 10px;
+        }
+
         /* Responsive Styles */
-        @media (max-width: 992px) {
+        @media (max-width: 1200px) {
             .hero h1 {
-                font-size: 2.8rem;
+                font-size: 3.5rem;
             }
             
             .section-title h2 {
-                font-size: 2.2rem;
+                font-size: 2.8rem;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .hero h1 {
+                font-size: 3rem;
+            }
+            
+            .section-title h2 {
+                font-size: 2.5rem;
+            }
+            
+            .reviews-container {
+                grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
             }
         }
 
@@ -655,16 +1139,18 @@
 
             nav {
                 position: fixed;
-                top: 70px;
+                top: 80px;
                 left: 0;
                 width: 100%;
                 background-color: white;
-                box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
-                padding: 20px;
+                box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+                padding: 30px;
                 transform: translateY(-100%);
                 opacity: 0;
                 visibility: hidden;
                 transition: var(--transition);
+                border-radius: 0 0 20px 20px;
+                z-index: 999;
             }
 
             nav.active {
@@ -678,47 +1164,100 @@
             }
 
             nav ul li {
-                margin: 0 0 15px 0;
+                margin: 0 0 20px 0;
+            }
+
+            nav ul li a {
+                font-size: 1.1rem;
             }
 
             .hero h1 {
-                font-size: 2.3rem;
+                font-size: 2.5rem;
             }
             
             .hero p {
-                font-size: 1rem;
+                font-size: 1.1rem;
             }
             
             section {
-                padding: 60px 0;
+                padding: 80px 0;
+            }
+            
+            .review-form-container {
+                padding: 30px 20px;
+            }
+            
+            .modal-content {
+                padding: 30px 20px;
+            }
+            
+            .modal-title {
+                font-size: 2rem;
             }
         }
 
         @media (max-width: 576px) {
             .hero h1 {
-                font-size: 2rem;
+                font-size: 2.2rem;
             }
             
             .section-title h2 {
-                font-size: 1.8rem;
+                font-size: 2rem;
             }
             
-            .modal-content {
-                padding: 20px;
+            .section-title p {
+                font-size: 1rem;
+            }
+            
+            .reviews-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .reviews-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .gallery-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .footer-container {
+                grid-template-columns: 1fr;
+                gap: 40px;
             }
             
             .modal-link {
-                padding: 12px;
-                font-size: 0.9rem;
+                padding: 18px;
+                font-size: 1rem;
             }
         }
     </style>
 </head>
 <body>
+    <!-- Notification -->
+    <div class="notification" id="notification">
+        <div class="notification-icon">
+            <i class="fas fa-check"></i>
+        </div>
+        <div class="notification-content">
+            <h4 id="notification-title">Berhasil!</h4>
+            <p id="notification-message">Aksi telah berhasil dilakukan.</p>
+        </div>
+        <button class="close-notification" id="close-notification">&times;</button>
+    </div>
+
     <!-- Header -->
     <header>
         <div class="container header-container">
-            <a href="#" class="logo">Serenity<span>Spa</span></a>
+            <a href="#" class="logo">
+                <i class="fas fa-spa logo-icon"></i>
+                Serenity<span>Spa</span>
+            </a>
             <button class="mobile-menu-btn">
                 <i class="fas fa-bars"></i>
             </button>
@@ -739,7 +1278,7 @@
         <div class="container hero-content">
             <h1>Pengalaman Relaksasi & Kecantikan Terbaik</h1>
             <p>Serenity Spa & Salon menawarkan perawatan lengkap untuk tubuh dan pikiran Anda. Dari pijat relaksasi, perawatan wajah, hingga gaya rambut terbaru, kami hadir untuk membuat Anda merasa lebih baik.</p>
-            <a href="#booking" class="btn">Booking Sekarang</a>
+            <a href="#booking" class="btn">Booking Sekarang <i class="fas fa-arrow-right"></i></a>
         </div>
     </section>
 
@@ -752,30 +1291,39 @@
             </div>
             <div class="services-grid">
                 <div class="service-card fade-in">
+                    <div class="service-icon">
+                        <i class="fas fa-hands"></i>
+                    </div>
                     <div class="service-img">
                         <img src="https://images.unsplash.com/photo-1560066984-138dadb4c035?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1074&q=80" alt="Pijat Relaksasi">
                     </div>
                     <div class="service-content">
                         <h3>Pijat Relaksasi</h3>
-                        <p>Pijat dengan minyak aromaterapi untuk melepas ketegangan otot dan menenangkan pikiran.</p>
+                        <p>Pijat dengan minyak aromaterapi untuk melepas ketegangan otot dan menenangkan pikiran. Durasi: 60-90 menit.</p>
                     </div>
                 </div>
                 <div class="service-card fade-in">
+                    <div class="service-icon">
+                        <i class="fas fa-smile"></i>
+                    </div>
                     <div class="service-img">
                         <img src="https://images.unsplash.com/photo-1596703923338-48f1c07e4f2e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1070&q=80" alt="Facial Treatment">
                     </div>
                     <div class="service-content">
                         <h3>Perawatan Wajah</h3>
-                        <p>Perawatan wajah lengkap dengan produk premium untuk kulit yang sehat dan bercahaya.</p>
+                        <p>Perawatan wajah lengkap dengan produk premium untuk kulit yang sehat dan bercahaya. Cocok untuk semua jenis kulit.</p>
                     </div>
                 </div>
                 <div class="service-card fade-in">
+                    <div class="service-icon">
+                        <i class="fas fa-cut"></i>
+                    </div>
                     <div class="service-img">
-                        <img src="https://images.unsplash.com/photo-1560066984-138dadb4c035?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1074&q=80" alt="Hair Styling">
+                        <img src="https://images.unsplash.com/photo-1562322140-8baeececf3df?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1169&q=80" alt="Hair Styling">
                     </div>
                     <div class="service-content">
                         <h3>Gaya Rambut</h3>
-                        <p>Potong, cat, dan styling rambut oleh penata rambut profesional sesuai tren terbaru.</p>
+                        <p>Potong, cat, dan styling rambut oleh penata rambut profesional sesuai tren terbaru. Konsultasi gratis.</p>
                     </div>
                 </div>
             </div>
@@ -783,7 +1331,7 @@
     </section>
 
     <!-- Gallery Section -->
-    <section id="gallery" style="background-color: #f5f0eb;">
+    <section id="gallery" class="gallery-section">
         <div class="container">
             <div class="section-title">
                 <h2>Galeri Lokasi Kami</h2>
@@ -793,25 +1341,29 @@
                 <div class="gallery-item fade-in">
                     <img src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" alt="Interior Salon">
                     <div class="gallery-item-overlay">
-                        <p>Ruang Tunggu yang Nyaman</p>
+                        <h3>Ruang Tunggu Premium</h3>
+                        <p>Desain interior yang nyaman dengan sentuhan modern</p>
                     </div>
                 </div>
                 <div class="gallery-item fade-in">
                     <img src="https://images.unsplash.com/photo-1596703923338-48f1c07e4f2e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1070&q=80" alt="Treatment Room">
                     <div class="gallery-item-overlay">
-                        <p>Ruang Perawatan Eksklusif</p>
+                        <h3>Ruang Perawatan Eksklusif</h3>
+                        <p>Privasi maksimal dengan fasilitas lengkap</p>
                     </div>
                 </div>
                 <div class="gallery-item fade-in">
                     <img src="https://images.unsplash.com/photo-1634942537034-2531766767d1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1228&q=80" alt="Spa Facilities">
                     <div class="gallery-item-overlay">
-                        <p>Fasilitas Spa Lengkap</p>
+                        <h3>Fasilitas Spa Lengkap</h3>
+                        <p>Perlengkapan terbaik untuk pengalaman maksimal</p>
                     </div>
                 </div>
                 <div class="gallery-item fade-in">
                     <img src="https://images.unsplash.com/photo-1560448204-603b3fc33ddc?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" alt="Salon Area">
                     <div class="gallery-item-overlay">
-                        <p>Area Salon yang Modern</p>
+                        <h3>Area Salon Modern</h3>
+                        <p>Peralatan terbaru untuk hasil terbaik</p>
                     </div>
                 </div>
             </div>
@@ -819,49 +1371,86 @@
     </section>
 
     <!-- Reviews Section -->
-    <section id="reviews">
+    <section id="reviews" class="reviews-section">
         <div class="container">
             <div class="section-title">
                 <h2>Ulasan Pelanggan</h2>
                 <p>Apa kata pelanggan tentang pengalaman mereka di Serenity Spa & Salon</p>
             </div>
-            <div class="reviews-container" id="reviews-container">
-                <!-- Reviews will be loaded here dynamically -->
+            
+            <!-- Rating Filter -->
+            <div class="reviews-header">
+                <h3>Filter berdasarkan rating:</h3>
+                <div class="rating-filter">
+                    <button class="rating-filter-btn active" data-rating="all">
+                        <i class="fas fa-star"></i> Semua
+                    </button>
+                    <button class="rating-filter-btn" data-rating="5">
+                        <i class="fas fa-star"></i> 5 Bintang
+                    </button>
+                    <button class="rating-filter-btn" data-rating="4">
+                        <i class="fas fa-star"></i> 4 Bintang
+                    </button>
+                    <button class="rating-filter-btn" data-rating="3">
+                        <i class="fas fa-star"></i> 3 Bintang
+                    </button>
+                    <button class="rating-filter-btn" data-rating="2">
+                        <i class="fas fa-star"></i> 2 Bintang
+                    </button>
+                    <button class="rating-filter-btn" data-rating="1">
+                        <i class="fas fa-star"></i> 1 Bintang
+                    </button>
+                </div>
             </div>
+            
+            <!-- Reviews Container -->
+            <div class="reviews-container" id="reviews-container">
+                <!-- Reviews will be loaded from Supabase -->
+            </div>
+            
+            <!-- Loading Spinner -->
+            <div class="spinner" id="reviews-spinner"></div>
             
             <!-- Review Form -->
             <div class="review-form-container fade-in">
-                <h3 style="text-align: center; margin-bottom: 25px;">Bagikan Pengalaman Anda</h3>
+                <h3 class="review-form-title">Bagikan Pengalaman Anda</h3>
                 <form id="review-form">
                     <div class="form-group">
-                        <label for="reviewer-name">Nama Anda</label>
+                        <label for="reviewer-name">Nama Anda *</label>
                         <input type="text" id="reviewer-name" class="form-control" placeholder="Masukkan nama Anda" required>
                     </div>
                     <div class="form-group">
-                        <label>Rating</label>
-                        <div class="star-rating">
-                            <i class="fas fa-star" data-rating="1"></i>
-                            <i class="fas fa-star" data-rating="2"></i>
-                            <i class="fas fa-star" data-rating="3"></i>
-                            <i class="fas fa-star" data-rating="4"></i>
+                        <label>Rating *</label>
+                        <div class="star-rating" id="star-rating">
                             <i class="fas fa-star" data-rating="5"></i>
+                            <i class="fas fa-star" data-rating="4"></i>
+                            <i class="fas fa-star" data-rating="3"></i>
+                            <i class="fas fa-star" data-rating="2"></i>
+                            <i class="fas fa-star" data-rating="1"></i>
                         </div>
                         <input type="hidden" id="rating-value" value="5">
                     </div>
                     <div class="form-group">
-                        <label for="review-text">Ulasan Anda</label>
+                        <label for="review-text">Ulasan Anda *</label>
                         <textarea id="review-text" class="form-control" placeholder="Bagikan pengalaman Anda di Serenity Spa & Salon" required></textarea>
                     </div>
                     <div class="form-group">
                         <label>Unggah Foto (Opsional)</label>
-                        <div class="photo-upload" id="photo-upload">
-                            <i class="fas fa-cloud-upload-alt" style="font-size: 2rem; color: var(--primary); margin-bottom: 10px;"></i>
+                        <div class="photo-upload-container" id="photo-upload">
+                            <div class="photo-upload-icon">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                            </div>
                             <p>Klik untuk mengunggah foto lokasi atau hasil perawatan</p>
+                            <small>Format: JPG, PNG, GIF (Max 5MB)</small>
                             <input type="file" id="photo-input" accept="image/*" style="display: none;">
                         </div>
-                        <div id="photo-preview" style="margin-top: 15px;"></div>
+                        <div id="photo-preview"></div>
                     </div>
-                    <button type="submit" class="btn" style="width: 100%;">Kirim Ulasan</button>
+                    <button type="submit" class="btn submit-btn">
+                        <span id="submit-text">Kirim Ulasan</span>
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                    <div class="spinner" id="submit-spinner"></div>
                 </form>
             </div>
         </div>
@@ -871,8 +1460,8 @@
     <div class="booking-modal" id="booking-modal">
         <div class="modal-content">
             <button class="close-modal" id="close-modal">&times;</button>
-            <h2>Booking Online</h2>
-            <p>Pilih salah satu metode di bawah untuk melakukan pemesanan:</p>
+            <h2 class="modal-title">Booking Online</h2>
+            <p class="modal-subtitle">Pilih salah satu metode di bawah untuk melakukan pemesanan:</p>
             <div class="modal-links">
                 <a href="https://wa.me/6281234567890?text=Halo%20Serenity%20Spa%2C%20saya%20ingin%20booking%20layanan" class="modal-link whatsapp" target="_blank">
                     <i class="fab fa-whatsapp"></i> WhatsApp Booking
@@ -880,14 +1469,16 @@
                 <a href="https://www.instagram.com/serenityspa" class="modal-link instagram" target="_blank">
                     <i class="fab fa-instagram"></i> Instagram DM
                 </a>
-                <a href="https://www.facebook.com/serenityspa" class="modal-link facebook" target="_blank">
-                    <i class="fab fa-facebook"></i> Facebook Message
-                </a>
-                <a href="tel:+628123456789" class="modal-link website">
-                    <i class="fas fa-phone"></i> Telepon Langsung
+                <a href="https://www.tiktok.com/@serenityspa" class="modal-link tiktok" target="_blank">
+                    <i class="fab fa-tiktok"></i> TikTok Message
                 </a>
             </div>
-            <p style="margin-top: 20px; font-size: 0.9rem; color: #666;">Jam operasional: 09:00 - 21:00 setiap hari</p>
+            <p style="margin-top: 30px; font-size: 0.95rem; color: #666; line-height: 1.6;">
+                <i class="fas fa-clock" style="margin-right: 8px;"></i> 
+                Jam operasional: 09:00 - 21:00 setiap hari<br>
+                <i class="fas fa-map-marker-alt" style="margin-right: 8px;"></i> 
+                Lokasi: Jl. Kemang Raya No. 12, Jakarta Selatan
+            </p>
         </div>
     </div>
 
@@ -897,65 +1488,71 @@
             <div class="footer-container">
                 <div class="footer-col">
                     <h3>Serenity Spa</h3>
-                    <p>Menawarkan pengalaman relaksasi dan kecantikan terbaik dengan layanan profesional dan fasilitas premium.</p>
+                    <p>Menawarkan pengalaman relaksasi dan kecantikan terbaik dengan layanan profesional dan fasilitas premium. Dedikasi kami adalah membuat Anda merasa istimewa.</p>
                     <div class="social-links">
-                        <a href="#"><i class="fab fa-instagram"></i></a>
-                        <a href="#"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#"><i class="fab fa-twitter"></i></a>
-                        <a href="#"><i class="fab fa-youtube"></i></a>
+                        <a href="https://www.instagram.com/serenityspa" target="_blank"><i class="fab fa-instagram"></i></a>
+                        <a href="https://wa.me/6281234567890" target="_blank"><i class="fab fa-whatsapp"></i></a>
+                        <a href="https://www.tiktok.com/@serenityspa" target="_blank"><i class="fab fa-tiktok"></i></a>
                     </div>
                 </div>
                 <div class="footer-col">
                     <h3>Kontak Kami</h3>
-                    <p><i class="fas fa-map-marker-alt"></i> Jl. Kemang Raya No. 12, Jakarta Selatan</p>
-                    <p><i class="fas fa-phone"></i> (021) 1234-5678</p>
-                    <p><i class="fas fa-envelope"></i> info@serenityspa.com</p>
-                    <p><i class="fas fa-clock"></i> Buka setiap hari 09:00 - 21:00</p>
+                    <div class="contact-info">
+                        <div class="contact-item">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <div>
+                                <p style="font-weight: 500; margin-bottom: 5px;">Alamat</p>
+                                <p>Jl. Kemang Raya No. 12, Jakarta Selatan</p>
+                            </div>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-phone"></i>
+                            <div>
+                                <p style="font-weight: 500; margin-bottom: 5px;">Telepon</p>
+                                <p>(021) 1234-5678 / 0812-3456-7890</p>
+                            </div>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-envelope"></i>
+                            <div>
+                                <p style="font-weight: 500; margin-bottom: 5px;">Email</p>
+                                <p>info@serenityspa.com</p>
+                            </div>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-clock"></i>
+                            <div>
+                                <p style="font-weight: 500; margin-bottom: 5px;">Jam Buka</p>
+                                <p>Setiap hari 09:00 - 21:00</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="footer-col">
                     <h3>Link Cepat</h3>
-                    <p><a href="#home" style="color: white; text-decoration: none;">Beranda</a></p>
-                    <p><a href="#services" style="color: white; text-decoration: none;">Layanan</a></p>
-                    <p><a href="#gallery" style="color: white; text-decoration: none;">Galeri</a></p>
-                    <p><a href="#reviews" style="color: white; text-decoration: none;">Ulasan</a></p>
-                    <p><a href="#booking" style="color: white; text-decoration: none;" class="booking-btn-footer">Booking Online</a></p>
+                    <div class="footer-links">
+                        <a href="#home"><i class="fas fa-chevron-right"></i> Beranda</a>
+                        <a href="#services"><i class="fas fa-chevron-right"></i> Layanan</a>
+                        <a href="#gallery"><i class="fas fa-chevron-right"></i> Galeri</a>
+                        <a href="#reviews"><i class="fas fa-chevron-right"></i> Ulasan</a>
+                        <a href="#booking" class="booking-btn-footer"><i class="fas fa-chevron-right"></i> Booking Online</a>
+                    </div>
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2023 Serenity Spa & Salon. All rights reserved.</p>
+                <p>&copy; <span id="current-year">2023</span> Serenity Spa & Salon. All rights reserved.</p>
             </div>
         </div>
     </footer>
 
     <script>
-        // Sample reviews data
-        const sampleReviews = [
-            {
-                id: 1,
-                name: "Rina Wijaya",
-                date: "15 Agustus 2023",
-                rating: 5,
-                text: "Pengalaman terbaik! Pijat relaksasinya benar-benar melepas penat. Terapisnya sangat profesional dan lingkungannya nyaman. Pasti akan kembali lagi!",
-                photo: "https://images.unsplash.com/photo-1596703923338-48f1c07e4f2e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1070&q=80"
-            },
-            {
-                id: 2,
-                name: "Dewi Sari",
-                date: "10 Agustus 2023",
-                rating: 4,
-                text: "Fasilitasnya lengkap dan bersih. Stafnya ramah-ramah. Perawatan wajahnya membuat kulit saya terasa lebih halus dan segar. Harga cukup worth it untuk kualitas yang diberikan.",
-                photo: "https://images.unsplash.com/photo-1560448204-603b3fc33ddc?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80"
-            },
-            {
-                id: 3,
-                name: "Budi Santoso",
-                date: "5 Agustus 2023",
-                rating: 5,
-                text: "Pertama kali mencoba spa dan hasilnya beyond expectation. Suasana tenang, aroma terapi menenangkan, dan pelayanan excellent. Sangat direkomendasikan!",
-                photo: "https://images.unsplash.com/photo-1634942537034-2531766767d1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1228&q=80"
-            }
-        ];
-
+        // Supabase Configuration - Ganti dengan URL dan Key Anda
+        const SUPABASE_URL = 'https://your-project.supabase.co';
+        const SUPABASE_ANON_KEY = 'your-anon-key';
+        
+        // Initialize Supabase client
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        
         // DOM Elements
         const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
         const nav = document.querySelector('nav');
@@ -964,12 +1561,28 @@
         const closeModalBtn = document.getElementById('close-modal');
         const reviewsContainer = document.getElementById('reviews-container');
         const reviewForm = document.getElementById('review-form');
-        const starRating = document.querySelectorAll('.star-rating i');
+        const starRating = document.querySelectorAll('#star-rating i');
         const ratingValue = document.getElementById('rating-value');
         const photoUpload = document.getElementById('photo-upload');
         const photoInput = document.getElementById('photo-input');
         const photoPreview = document.getElementById('photo-preview');
-
+        const ratingFilterBtns = document.querySelectorAll('.rating-filter-btn');
+        const reviewsSpinner = document.getElementById('reviews-spinner');
+        const submitSpinner = document.getElementById('submit-spinner');
+        const submitText = document.getElementById('submit-text');
+        const notification = document.getElementById('notification');
+        const notificationTitle = document.getElementById('notification-title');
+        const notificationMessage = document.getElementById('notification-message');
+        const closeNotificationBtn = document.getElementById('close-notification');
+        
+        // Current year for footer
+        document.getElementById('current-year').textContent = new Date().getFullYear();
+        
+        // State variables
+        let currentFilter = 'all';
+        let reviews = [];
+        let selectedPhoto = null;
+        
         // Mobile Menu Toggle
         mobileMenuBtn.addEventListener('click', () => {
             nav.classList.toggle('active');
@@ -977,7 +1590,7 @@
                 ? '<i class="fas fa-times"></i>' 
                 : '<i class="fas fa-bars"></i>';
         });
-
+        
         // Close mobile menu when clicking on a link
         document.querySelectorAll('nav a').forEach(link => {
             link.addEventListener('click', () => {
@@ -985,7 +1598,7 @@
                 mobileMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
             });
         });
-
+        
         // Booking Modal
         bookingBtns.forEach(btn => {
             btn.addEventListener('click', (e) => {
@@ -994,13 +1607,13 @@
                 document.body.style.overflow = 'hidden';
             });
         });
-
+        
         // Close Modal
         closeModalBtn.addEventListener('click', () => {
             bookingModal.classList.remove('active');
             document.body.style.overflow = 'auto';
         });
-
+        
         // Close modal when clicking outside
         bookingModal.addEventListener('click', (e) => {
             if (e.target === bookingModal) {
@@ -1008,42 +1621,65 @@
                 document.body.style.overflow = 'auto';
             }
         });
-
+        
         // Star Rating
         starRating.forEach(star => {
             star.addEventListener('click', () => {
                 const rating = star.getAttribute('data-rating');
                 ratingValue.value = rating;
                 
+                // Reset all stars
                 starRating.forEach(s => {
-                    if (s.getAttribute('data-rating') <= rating) {
+                    s.classList.remove('active');
+                });
+                
+                // Activate selected stars
+                starRating.forEach(s => {
+                    if (s.getAttribute('data-rating') >= rating) {
                         s.classList.add('active');
-                    } else {
-                        s.classList.remove('active');
                     }
                 });
             });
+            
+            // Initialize with 5 stars active
+            if (star.getAttribute('data-rating') >= 5) {
+                star.classList.add('active');
+            }
         });
-
+        
         // Photo Upload
         photoUpload.addEventListener('click', () => {
             photoInput.click();
         });
-
+        
         photoInput.addEventListener('change', function() {
             const file = this.files[0];
             if (file) {
+                // Check file size (max 5MB)
+                if (file.size > 5 * 1024 * 1024) {
+                    showNotification('error', 'File terlalu besar', 'Ukuran file maksimal 5MB');
+                    return;
+                }
+                
+                // Check file type
+                const validTypes = ['image/jpeg', 'image/png', 'image/gif'];
+                if (!validTypes.includes(file.type)) {
+                    showNotification('error', 'Format tidak didukung', 'Hanya format JPG, PNG, dan GIF yang diperbolehkan');
+                    return;
+                }
+                
+                selectedPhoto = file;
                 const reader = new FileReader();
                 
                 reader.addEventListener('load', function() {
                     photoPreview.innerHTML = `
-                        <div style="display: flex; align-items: center; background-color: #f9f9f9; padding: 10px; border-radius: 8px;">
-                            <img src="${reader.result}" alt="Preview" style="width: 80px; height: 80px; object-fit: cover; border-radius: 5px; margin-right: 15px;">
+                        <div class="photo-preview-item">
+                            <img src="${reader.result}" alt="Preview">
                             <div>
                                 <p style="font-weight: 500; margin-bottom: 5px;">${file.name}</p>
                                 <p style="font-size: 0.9rem; color: #666;">${(file.size / 1024).toFixed(2)} KB</p>
                             </div>
-                            <button type="button" id="remove-photo" style="margin-left: auto; background: none; border: none; color: #ff6b6b; cursor: pointer;">
+                            <button type="button" class="remove-photo" id="remove-photo">
                                 <i class="fas fa-times"></i>
                             </button>
                         </div>
@@ -1053,21 +1689,127 @@
                     document.getElementById('remove-photo').addEventListener('click', function() {
                         photoPreview.innerHTML = '';
                         photoInput.value = '';
+                        selectedPhoto = null;
                     });
                 });
                 
                 reader.readAsDataURL(file);
             }
         });
-
-        // Load Sample Reviews
-        function loadReviews() {
+        
+        // Rating Filter
+        ratingFilterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const rating = btn.getAttribute('data-rating');
+                
+                // Update active button
+                ratingFilterBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                
+                // Update current filter
+                currentFilter = rating;
+                
+                // Filter reviews
+                filterReviews();
+            });
+        });
+        
+        // Load Reviews from Supabase
+        async function loadReviews() {
+            reviewsSpinner.style.display = 'block';
+            
+            try {
+                const { data, error } = await supabase
+                    .from('reviews')
+                    .select('*')
+                    .order('created_at', { ascending: false });
+                
+                if (error) throw error;
+                
+                reviews = data || [];
+                renderReviews();
+                filterReviews();
+                
+                // If no reviews, show sample data
+                if (reviews.length === 0) {
+                    await loadSampleReviews();
+                }
+            } catch (error) {
+                console.error('Error loading reviews:', error);
+                showNotification('error', 'Error', 'Gagal memuat ulasan. Menampilkan data contoh.');
+                await loadSampleReviews();
+            } finally {
+                reviewsSpinner.style.display = 'none';
+            }
+        }
+        
+        // Load Sample Reviews if Supabase is not set up
+        async function loadSampleReviews() {
+            const sampleReviews = [
+                {
+                    id: 1,
+                    name: 'Rina Wijaya',
+                    rating: 5,
+                    review: 'Pengalaman terbaik! Pijat relaksasinya benar-benar melepas penat. Terapisnya sangat profesional dan lingkungannya nyaman. Pasti akan kembali lagi!',
+                    photo_url: 'https://images.unsplash.com/photo-1596703923338-48f1c07e4f2e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1070&q=80',
+                    created_at: '2023-08-15T10:30:00Z'
+                },
+                {
+                    id: 2,
+                    name: 'Dewi Sari',
+                    rating: 4,
+                    review: 'Fasilitasnya lengkap dan bersih. Stafnya ramah-ramah. Perawatan wajahnya membuat kulit saya terasa lebih halus dan segar. Harga cukup worth it untuk kualitas yang diberikan.',
+                    photo_url: 'https://images.unsplash.com/photo-1560448204-603b3fc33ddc?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80',
+                    created_at: '2023-08-10T14:20:00Z'
+                },
+                {
+                    id: 3,
+                    name: 'Budi Santoso',
+                    rating: 5,
+                    review: 'Pertama kali mencoba spa dan hasilnya beyond expectation. Suasana tenang, aroma terapi menenangkan, dan pelayanan excellent. Sangat direkomendasikan!',
+                    photo_url: 'https://images.unsplash.com/photo-1634942537034-2531766767d1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1228&q=80',
+                    created_at: '2023-08-05T16:45:00Z'
+                },
+                {
+                    id: 4,
+                    name: 'Sari Dewi',
+                    rating: 3,
+                    review: 'Pelayanan cukup baik, namun ruang tunggu agak ramai saat saya datang. Pijatnya tetap menyenangkan meski sedikit terganggu suara dari luar.',
+                    photo_url: null,
+                    created_at: '2023-08-01T11:15:00Z'
+                },
+                {
+                    id: 5,
+                    name: 'Agus Setiawan',
+                    rating: 5,
+                    review: 'Baru pertama kali melakukan perawatan wajah di sini dan hasilnya luar biasa! Kulit terasa lebih bersih dan segar. Staf sangat ramah dan profesional.',
+                    photo_url: 'https://images.unsplash.com/photo-1560066984-138dadb4c035?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1074&q=80',
+                    created_at: '2023-07-28T09:30:00Z'
+                }
+            ];
+            
+            reviews = sampleReviews;
+            renderReviews();
+            filterReviews();
+        }
+        
+        // Render Reviews
+        function renderReviews() {
             reviewsContainer.innerHTML = '';
             
-            sampleReviews.forEach(review => {
+            reviews.forEach(review => {
                 const reviewCard = document.createElement('div');
                 reviewCard.className = 'review-card fade-in';
                 
+                // Format date
+                const date = new Date(review.created_at);
+                const formattedDate = date.toLocaleDateString('id-ID', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                });
+                
+                // Create stars HTML
                 let stars = '';
                 for (let i = 1; i <= 5; i++) {
                     stars += i <= review.rating 
@@ -1075,15 +1817,22 @@
                         : '<i class="far fa-star"></i>';
                 }
                 
+                // Create photo HTML if exists
+                const photoHTML = review.photo_url 
+                    ? `<div class="review-photo">
+                            <img src="${review.photo_url}" alt="Review Photo">
+                        </div>`
+                    : '';
+                
                 reviewCard.innerHTML = `
                     <div class="review-header">
                         <div class="reviewer-info">
                             <div class="reviewer-img">
-                                <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(review.name)}&background=${encodeURIComponent('c9a8a9')}&color=fff" alt="${review.name}">
+                                <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(review.name)}&background=${encodeURIComponent('c9a8a9')}&color=fff&size=100" alt="${review.name}">
                             </div>
-                            <div>
-                                <div class="reviewer-name">${review.name}</div>
-                                <div class="review-date">${review.date}</div>
+                            <div class="reviewer-details">
+                                <h4>${review.name}</h4>
+                                <div class="review-date">${formattedDate}</div>
                             </div>
                         </div>
                         <div class="rating">
@@ -1091,11 +1840,9 @@
                         </div>
                     </div>
                     <div class="review-text">
-                        <p>${review.text}</p>
+                        <p>${review.review}</p>
                     </div>
-                    <div class="review-photo">
-                        <img src="${review.photo}" alt="Review Photo">
-                    </div>
+                    ${photoHTML}
                 `;
                 
                 reviewsContainer.appendChild(reviewCard);
@@ -1104,54 +1851,150 @@
             // Initialize fade-in animations
             initFadeIn();
         }
-
+        
+        // Filter Reviews
+        function filterReviews() {
+            const reviewCards = document.querySelectorAll('.review-card');
+            
+            reviewCards.forEach(card => {
+                const rating = parseInt(card.querySelector('.rating').textContent.replace(/[^⭐]/g, '⭐').length);
+                
+                if (currentFilter === 'all' || parseInt(currentFilter) === rating) {
+                    card.style.display = 'block';
+                    // Trigger animation
+                    setTimeout(() => {
+                        card.classList.add('appear');
+                    }, 10);
+                } else {
+                    card.style.display = 'none';
+                    card.classList.remove('appear');
+                }
+            });
+            
+            // Show message if no reviews match filter
+            const visibleReviews = document.querySelectorAll('.review-card[style="display: block"]');
+            if (visibleReviews.length === 0 && reviews.length > 0) {
+                reviewsContainer.innerHTML = `
+                    <div style="grid-column: 1/-1; text-align: center; padding: 50px;">
+                        <i class="fas fa-star" style="font-size: 4rem; color: #ddd; margin-bottom: 20px;"></i>
+                        <h3 style="margin-bottom: 10px;">Tidak ada ulasan dengan rating ${currentFilter} bintang</h3>
+                        <p>Coba filter rating lain untuk melihat ulasan.</p>
+                    </div>
+                `;
+            }
+        }
+        
         // Submit Review Form
-        reviewForm.addEventListener('submit', function(e) {
+        reviewForm.addEventListener('submit', async function(e) {
             e.preventDefault();
             
-            const name = document.getElementById('reviewer-name').value;
+            const name = document.getElementById('reviewer-name').value.trim();
             const rating = parseInt(ratingValue.value);
-            const text = document.getElementById('review-text').value;
-            const date = new Date().toLocaleDateString('id-ID', { 
-                year: 'numeric', 
-                month: 'long', 
-                day: 'numeric' 
-            });
+            const reviewText = document.getElementById('review-text').value.trim();
             
-            // Create new review object
-            const newReview = {
-                id: sampleReviews.length + 1,
-                name: name,
-                date: date,
-                rating: rating,
-                text: text,
-                photo: photoInput.files.length > 0 
-                    ? URL.createObjectURL(photoInput.files[0]) 
-                    : "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80"
-            };
+            if (!name || !rating || !reviewText) {
+                showNotification('error', 'Form tidak lengkap', 'Harap isi semua field yang wajib diisi');
+                return;
+            }
             
-            // Add to beginning of sampleReviews
-            sampleReviews.unshift(newReview);
+            // Show loading state
+            submitSpinner.style.display = 'block';
+            submitText.textContent = 'Mengirim...';
             
-            // Reload reviews
-            loadReviews();
-            
-            // Reset form
-            reviewForm.reset();
-            photoPreview.innerHTML = '';
-            photoInput.value = '';
-            
-            // Reset stars to default
-            starRating.forEach(star => {
-                star.classList.remove('active');
-            });
-            starRating[4].classList.add('active');
-            ratingValue.value = 5;
-            
-            // Show success message
-            alert('Terima kasih! Ulasan Anda telah berhasil dikirim.');
+            try {
+                let photoUrl = null;
+                
+                // Upload photo if selected
+                if (selectedPhoto) {
+                    const fileName = `review_${Date.now()}_${selectedPhoto.name}`;
+                    const { data, error } = await supabase.storage
+                        .from('review-photos')
+                        .upload(fileName, selectedPhoto);
+                    
+                    if (error) throw error;
+                    
+                    // Get public URL
+                    const { data: urlData } = supabase.storage
+                        .from('review-photos')
+                        .getPublicUrl(fileName);
+                    
+                    photoUrl = urlData.publicUrl;
+                }
+                
+                // Insert review into Supabase
+                const { data, error } = await supabase
+                    .from('reviews')
+                    .insert([
+                        {
+                            name: name,
+                            rating: rating,
+                            review: reviewText,
+                            photo_url: photoUrl,
+                            created_at: new Date().toISOString()
+                        }
+                    ]);
+                
+                if (error) throw error;
+                
+                // Show success notification
+                showNotification('success', 'Ulasan Terkirim!', 'Terima kasih telah berbagi pengalaman Anda.');
+                
+                // Confetti celebration for 5-star reviews
+                if (rating === 5) {
+                    confetti({
+                        particleCount: 100,
+                        spread: 70,
+                        origin: { y: 0.6 }
+                    });
+                }
+                
+                // Reset form
+                reviewForm.reset();
+                photoPreview.innerHTML = '';
+                photoInput.value = '';
+                selectedPhoto = null;
+                
+                // Reset stars
+                starRating.forEach(s => {
+                    s.classList.remove('active');
+                    if (s.getAttribute('data-rating') >= 5) {
+                        s.classList.add('active');
+                    }
+                });
+                ratingValue.value = 5;
+                
+                // Reload reviews
+                await loadReviews();
+                
+            } catch (error) {
+                console.error('Error submitting review:', error);
+                showNotification('error', 'Error', 'Gagal mengirim ulasan. Silakan coba lagi.');
+            } finally {
+                // Hide loading state
+                submitSpinner.style.display = 'none';
+                submitText.textContent = 'Kirim Ulasan';
+            }
         });
-
+        
+        // Show Notification
+        function showNotification(type, title, message) {
+            notification.className = `notification ${type}`;
+            notificationTitle.textContent = title;
+            notificationMessage.textContent = message;
+            
+            notification.classList.add('show');
+            
+            // Auto hide after 5 seconds
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 5000);
+        }
+        
+        // Close Notification
+        closeNotificationBtn.addEventListener('click', () => {
+            notification.classList.remove('show');
+        });
+        
         // Fade-in animation on scroll
         function initFadeIn() {
             const fadeElements = document.querySelectorAll('.fade-in');
@@ -1173,35 +2016,45 @@
             // Check on scroll
             window.addEventListener('scroll', fadeInOnScroll);
         }
-
+        
         // Initialize when page loads
         document.addEventListener('DOMContentLoaded', function() {
+            // Load reviews from Supabase
             loadReviews();
             
             // Set current year in footer
-            document.querySelector('.footer-bottom p').innerHTML = `&copy; ${new Date().getFullYear()} Serenity Spa & Salon. All rights reserved.`;
+            document.getElementById('current-year').textContent = new Date().getFullYear();
             
             // Header scroll effect
             window.addEventListener('scroll', function() {
                 const header = document.querySelector('header');
                 if (window.scrollY > 50) {
                     header.style.backgroundColor = 'rgba(255, 255, 255, 0.98)';
-                    header.style.boxShadow = '0 5px 20px rgba(0, 0, 0, 0.1)';
+                    header.style.boxShadow = '0 10px 30px rgba(0, 0, 0, 0.1)';
+                    header.style.backdropFilter = 'blur(10px)';
                 } else {
-                    header.style.backgroundColor = 'rgba(255, 255, 255, 0.95)';
-                    header.style.boxShadow = '0 5px 15px rgba(0, 0, 0, 0.1)';
+                    header.style.backgroundColor = 'rgba(255, 255, 255, 0.98)';
+                    header.style.boxShadow = '0 5px 15px rgba(0, 0, 0, 0.08)';
+                    header.style.backdropFilter = 'blur(10px)';
                 }
             });
+            
+            // Add float animation to some elements
+            const floatElements = document.querySelectorAll('.service-card, .gallery-item');
+            floatElements.forEach((el, index) => {
+                el.style.animationDelay = `${index * 0.1}s`;
+                el.classList.add('float-animation');
+            });
+            
+            // Instructions for Supabase setup
+            console.log("Untuk menggunakan Supabase:");
+            console.log("1. Buat akun di supabase.com");
+            console.log("2. Buat proyek baru dan database");
+            console.log("3. Buat tabel 'reviews' dengan kolom: id (bigint, primary key), name (text), rating (int), review (text), photo_url (text), created_at (timestamptz)");
+            console.log("4. Buat bucket di Storage bernama 'review-photos' dengan kebijakan akses public");
+            console.log("5. Ganti SUPABASE_URL dan SUPABASE_ANON_KEY di kode dengan URL dan key dari proyek Anda");
+            console.log("6. Untuk deploy ke Netlify, upload file ini ke repository GitHub dan hubungkan ke Netlify");
         });
-
-        // Instructions for Netlify deployment
-        console.log("Untuk deploy ke Netlify:");
-        console.log("1. Buat akun di Netlify.com");
-        console.log("2. Pilih 'New site from Git'");
-        console.log("3. Pilih repository yang berisi file ini");
-        console.log("4. Netlify akan otomatis mendeteksi dan deploy website Anda");
-        console.log("5. Setelah deploy, Anda bisa mengakses website dengan URL yang diberikan Netlify");
-        console.log("6. Untuk custom domain, masuk ke 'Domain settings' di dashboard Netlify");
     </script>
 </body>
-  </html>
+    </html>
